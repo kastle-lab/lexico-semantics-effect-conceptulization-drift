@@ -1,0 +1,689 @@
+cq_id,cq_normalized,sparql_query,model_id,kg_id,query_cleaning_status,query_normalization_status,execution_status,syntax_ok,satisfiable,deterministic,qualitative_notes
+cq_11,What are all the available movies and their directors?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?movie ?movieLabel ?director ?directorLabel
+WHERE {
+  # Match movies (items that have the director property)
+  ?movie ns1:director ?director .
+  
+  # Get the label for the movie
+  OPTIONAL { ?movie rdfs:label ?movieLabel }
+  
+  # Get the label for the director
+  OPTIONAL { ?director rdfs:label ?directorLabel }
+}",Claude,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,FALSE,TRUE," - Doesn't type the movie, which might be getting other things that have directors
+- Also doesn't type the director but presumably fine due to the predicate"
+cq_11,What are all the available movies and their directors?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?movie ?director
+WHERE {
+  ?movie rdf:type <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/movie> .
+  ?movie ns1:director ?director .
+}",Claude,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for movie type is unusual but not incorrect
+- Doesn't type the director but prsumably fine due to the predicate"
+cq_10,What are all the locations (places) available?,"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT DISTINCT ?location
+WHERE {
+  {
+    ?location a ?type .
+    ?type rdfs:subClassOf* <http://www.w3.org/2002/07/owl#Thing> .
+    FILTER(
+      CONTAINS(LCASE(STR(?location)), ""city"") || 
+      CONTAINS(LCASE(STR(?location)), ""town"") || 
+      CONTAINS(LCASE(STR(?location)), ""country"") || 
+      CONTAINS(LCASE(STR(?location)), ""island"") || 
+      CONTAINS(LCASE(STR(?location)), ""continent"") || 
+      CONTAINS(LCASE(STR(?location)), ""ocean"") || 
+      CONTAINS(LCASE(STR(?location)), ""mountain"") || 
+      CONTAINS(LCASE(STR(?location)), ""base"") || 
+      CONTAINS(LCASE(STR(?location)), ""realm"") || 
+      CONTAINS(LCASE(STR(?location)), ""dimension"")
+    )
+  }
+  UNION
+  {
+    ?location ns1:placeofbirth ?birthplace .
+  }
+  UNION
+  {
+    ?location ns1:baseofoperations ?base .
+  }
+}",Claude,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Query doesn't fully make sense
+- Starts with getting a location, which is actually anything but then filters it to specific strings representing locations
+- Also does a union with any of these locations that has a birthplace?"
+cq_10,What are all the locations (places) available?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?location
+WHERE {
+  ?location rdf:type <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/location> .
+}",Claude,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE, - Using whole URI for location type is unusual but not incorrect
+cq_07,Who are all the director(s) for each of the movies?,,GPT5,marveldb_big,non_sparql_output,unchanged,NON_SPARQL_OUTPUT,FALSE,FALSE,FALSE, - No Query
+cq_07,Who are all the director(s) for each of the movies?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?movie ?movieLabel ?director ?directorLabel
+WHERE {
+  ?movie a <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/movie> .
+  {
+    ?director ns1:directed ?movie .
+  } UNION {
+    ?movie ns1:director ?director .
+  }
+  OPTIONAL { ?movie rdfs:label ?movieLabel . }
+  OPTIONAL { ?director rdfs:label ?directorLabel . }
+}
+ORDER BY LCASE(STR(?movieLabel)) LCASE(STR(?directorLabel))",GPT5,mcuwiki_small,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for movie type is unusual but not incorrect
+- Doesn't type the director but prsumably fine due to the predicates"
+cq_03,What are the real names and/or primary aliases for each of the characters?,"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT DISTINCT ?character ?characterLabel ?realName ?alias
+WHERE {
+  ?character a <http://dbkwik.webdatacommons.org/marvel.wikia.com/class/character> .
+  OPTIONAL { ?character rdfs:label ?characterLabel . }
+  OPTIONAL { ?character ns1:realname ?realName . }
+  OPTIONAL { ?character skos:altLabel ?alias . }
+}
+ORDER BY LCASE(STR(?characterLabel)) ?character",GPT5,marveldb_big,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for character type is unusual but not incorrect
+- Unclear if alias is actually the primary alias based on the predicate skos:altLabel"
+cq_03,What are the real names and/or primary aliases for each of the characters?,"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+
+SELECT DISTINCT ?character ?characterLabel ?realName ?alias
+WHERE {
+  {
+    ?character rdf:type <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/character> .
+  } UNION {
+    ?character (ns1:realName|ns1:alias) ?_x .
+  }
+  OPTIONAL { ?character rdfs:label ?characterLabel . }
+  OPTIONAL {
+    ?character ns1:realName ?rn .
+    OPTIONAL { ?rn rdfs:label ?rnLabel . }
+    BIND(COALESCE(?rnLabel, STR(?rn)) AS ?realName)
+  }
+  OPTIONAL {
+    ?character ns1:alias ?al .
+    OPTIONAL { ?al rdfs:label ?alLabel . }
+    BIND(COALESCE(?alLabel, STR(?al)) AS ?alias)
+  }
+}
+ORDER BY LCASE(STR(?characterLabel)) ?character",GPT5,mcuwiki_small,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for character type is unusual but not incorrect
+- More flexible approach that gets anything that has a realName or alias even if it's not explicitly a character; this could be helpful but also may be doing something not technically requested by the CQ
+- Interesting approach where an attempt is made to get the rdfs:label of the realName or alias if it is available"
+cq_06,"What are all the release dates (or years), if available, for each of the movies?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?movieLabel ?releaseDate ?year
+WHERE {
+  {
+    ?movie a <http://dbkwik.webdatacommons.org/marvel.wikia.com/class/youtube> .
+  }
+  UNION
+  {
+    ?movie a <http://dbkwik.webdatacommons.org/marvel.wikia.com/class/imdb_title> .
+  }
+  
+  ?movie rdfs:label ?movieLabel .
+  OPTIONAL { ?movie ns1:releasedate ?releaseDate . }
+  OPTIONAL { ?movie ns1:year ?year . }
+}",Gemini,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for movie type is unusual but not incorrect
+- Movie types specified don't semantically align with a movie (youtube and imdb_title are likely to contain extraneous entries, as well as miss movies)"
+cq_06,"What are all the release dates (or years), if available, for each of the movies?","PREFIX ns3: <http://dbkwik.webdatacommons.org/ontology/>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?movieLabel ?releaseDate
+WHERE {
+  ?movie a ns3:Movie .
+  ?movie rdfs:label ?movieLabel .
+  OPTIONAL {
+    ?movie (ns1:release | ns1:released) ?releaseDate .
+  }
+}",Gemini,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,FALSE,TRUE, - Doesn't make a distinction between release date and year (but this may not be necessary anyway depending on the ontology)
+cq_02,What are all the movies (and/or TV shows) available?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT DISTINCT ?media
+WHERE {
+  { ?s ns1:movies ?media . }
+  UNION
+  { ?s ns1:television ?media . }
+}",Gemini,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Unclear if media is sufficient to account for all movies and tv shows and only movies and tv shows (this is technically just an arbitrarily chosen variable name; but if we assume the variable name has semantic meaning, the point still stands)
+- Also unclear how the movies and television predicates work and if their object is sufficient to get these movies and tv shows (i.e., should the subject be used instead; these predicates lack semantic richness regarding expected subjects and objects)"
+cq_02,What are all the movies (and/or TV shows) available?,"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?media ?label
+WHERE {
+  VALUES ?mediaType {
+    <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/movie>
+    <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/tv>
+    <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/web_series>
+    <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/documentary>
+  }
+  ?media rdf:type ?mediaType .
+  ?media rdfs:label ?label .
+}",Gemini,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Difficult to say whether the mediaTypes are accurate/sufficient; while I would generally consider a documentary a movie or tv show, the categorization of a web_series is less clear"
+cq_04,"What are all the associated species or types (e.g., human, Asgardian, AI) for each of the characters?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT DISTINCT ?character ?species
+WHERE {
+  ?character ns1:species ?species .
+}",gpt-oss120b,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,FALSE,TRUE, - Failure to type entities as characters renders it Unclear whether the species of only characters are being considered
+cq_04,"What are all the associated species or types (e.g., human, Asgardian, AI) for each of the characters?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?character ?characterLabel ?species ?speciesLabel
+WHERE {
+  ?character ns1:species ?species .
+  OPTIONAL { ?character rdfs:label ?characterLabel . }
+  OPTIONAL { ?species   rdfs:label ?speciesLabel . }
+}
+ORDER BY ?characterLabel",gpt-oss120b,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE, - Failure to type entities as characters renders it Unclear whether the species of only characters are being considered
+cq_05,"What are all the origin locations (e.g., homeworld, birthplace, base) for each of the characters?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT DISTINCT ?character ?origin
+WHERE {
+  { ?character ns1:origin ?origin }
+  UNION
+  { ?character ns1:placeofbirth ?origin }
+  UNION
+  { ?character ns1:baseofoperations ?origin }
+}
+ORDER BY ?character",gpt-oss120b,marveldb_big,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Failure to type entities as characters renders it Unclear whether the origins of only characters are being considered
+- Unclear whether the origin predicate results in an origin location or some other kind of origin"
+cq_05,"What are all the origin locations (e.g., homeworld, birthplace, base) for each of the characters?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+
+SELECT DISTINCT ?character ?originLocation
+WHERE {
+  VALUES ?originProp { ns1:homeplanet ns1:birthplace ns1:base }
+  ?character ?originProp ?originLocation .
+}",gpt-oss120b,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE, - Failure to type entities as characters renders it Unclear whether the origins of only characters are being considered
+cq_16,What are all the character–power–movie triples available with respect to characters with specific powers and the movies they appear in?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?character ?power ?movie
+WHERE {
+  ?character ns1:powers ?power .
+  ?character ns1:movies ?movie .
+}",Claude,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,FALSE,TRUE," - Failure to type entities as characters renders it unclear whether the powers and movies of only characters are being considered
+- The predicates powers and movies lack semantic richness; thus, it is difficult to determine if they are being used correctly
+- If a character only posesses a particular power in a specific movie, it is unclear how this query accounts for that"
+cq_16,What are all the character–power–movie triples available with respect to characters with specific powers and the movies they appear in?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?character ?power ?movie
+WHERE {
+  ?character a <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/character> .
+  ?character ?powerProperty ?power .
+  ?character ns1:movie ?movie .
+  
+  FILTER(?powerProperty IN (ns1:alias, ns1:realName) || 
+         CONTAINS(STR(?powerProperty), ""power"") || 
+         CONTAINS(STR(?powerProperty), ""ability""))
+}",Claude,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for character type is unusual but not incorrect
+- Getting all properties for the power and then filtering them might cause issues; the aliases and realNames are kept which are not powers; a string filter for power or ability in the predicate isn't robust and may not get certain powers or any powers at all
+- If a character only posesses a particular power in a specific movie, it is unclear how this query accounts for that"
+cq_13,What are all the character–movie appearance pairs (which characters appear in which movies) available?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?character ?movie
+WHERE {
+  ?character ns1:movies ?movie .
+}",Claude,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Failure to type entities as characters renders it unclear whether the movies of only characters are being considered
+- The predicate movies lacks semantic richness; thus, it is difficult to determine if it is being used correctly"
+cq_13,What are all the character–movie appearance pairs (which characters appear in which movies) available?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?character ?movie
+WHERE {
+  ?character ns1:movie ?movie .
+}",Claude,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE, - Failure to type entities as characters renders it Unclear whether the movies of only characters are being considered
+cq_22,What are all the available distinct powers and the set of characters associated with each power?,"PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX ns2: <http://dbkwik.webdatacommons.org/ontology/>
+PREFIX ns3: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/%3>
+PREFIX ns7: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/alternate232%60>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?power ?powerLabel (GROUP_CONCAT(DISTINCT ?charLabel; separator="", "") AS ?characters)
+WHERE {
+  {
+    # Characters typed with a power-related class (e.g., Superhuman Agility, Superhuman Durability, Healing Factor)
+    ?char a ?power .
+    ?power rdfs:label ?powerLabel .
+    FILTER(CONTAINS(STR(?power), ""/class/""))
+    FILTER(CONTAINS(LCASE(STR(?powerLabel)), ""superhuman"") || CONTAINS(LCASE(STR(?powerLabel)), ""healing""))
+  }
+  UNION
+  {
+    # Characters categorized under power categories (e.g., Electrokinesis, Flight)
+    ?char dcterms:subject ?power .
+    ?power rdfs:label ?powerLabel .
+    FILTER(CONTAINS(STR(?power), ""/resource/Category:""))
+  }
+  ?char rdfs:label ?charLabel .
+}
+GROUP BY ?power ?powerLabel
+ORDER BY LCASE(STR(?powerLabel))",GPT5,marveldb_big,exact_query,schema_prefixes_added,EXECUTION_FAILURE,TRUE,FALSE,FALSE," - Query is difficult to parse
+- It doesn't fully make sense to type a character with a power
+- Why is superhuman and healing in particular being filtered for?
+- No entities are being typed with explicit types; URIs are just being checked to see if they contain specific strings"
+cq_22,What are all the available distinct powers and the set of characters associated with each power?,,GPT5,mcuwiki_small,non_sparql_output,unchanged,NON_SPARQL_OUTPUT,FALSE,FALSE,FALSE, - No Query
+cq_20,"What are all locations that are associated with at least one character appearance (e.g., origin or major setting)?","PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT DISTINCT ?location ?label
+WHERE {
+  ?char a <http://dbkwik.webdatacommons.org/marvel.wikia.com/class/character> ;
+        (ns1:placeofbirth|ns1:baseofoperations) ?location .
+  FILTER(isIRI(?location))
+  OPTIONAL { ?location rdfs:label ?label . }
+}
+ORDER BY ?label ?location",GPT5,marveldb_big,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for character type is unusual but not incorrect
+- Unclear if placeofbirth and baseofoperations account for all locations; may have been better to use any predicate and then filtered by location type"
+cq_20,"What are all locations that are associated with at least one character appearance (e.g., origin or major setting)?","PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+
+SELECT DISTINCT ?loc ?locLabel WHERE {
+  {
+    { ?char rdf:type <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/character> }
+    UNION
+    { ?char ns1:actor ?actor }
+    { ?char ns1:citizenship ?loc }
+    UNION
+    { ?char ns1:homeplanet ?loc }
+  }
+  UNION
+  {
+    { ?char rdf:type <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/character> }
+    UNION
+    { ?char ns1:actor ?actor }
+    ?char ?charWorkProp ?work .
+    FILTER(?charWorkProp IN (ns1:movie, ns1:tvSeries))
+    ?loc rdf:type <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/location> ;
+         ?locWorkProp ?work .
+    FILTER(?locWorkProp IN (ns1:movie, ns1:tvSeries))
+  }
+  OPTIONAL { ?loc rdfs:label ?locLabel }
+}",GPT5,mcuwiki_small,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for character and locations types is unusual but not incorrect
+- Getting characters with an actor doesn't fully make sense, unless that's the means of modeling character appearances, but I believe there is a better way to do it
+- The latter part, in which all triples are gotten and then filtered for the movie or tvSeries predicates to get specific works and then the locations, is also questionable"
+cq_21,What are all the director–actor pairs linked through movies available?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?director ?actor WHERE {
+  ?work ns1:creators ?director .
+  ?work ns1:featured ?character .
+  ?character ns1:movies ?actor_entity .
+  ?actor_entity rdfs:label ?actor .
+}",Gemini,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,FALSE,TRUE," - The lack of typing entities is concerning
+- Creators may not be just movie directors, meaning the query gets more than it's supposed to (but if no actors can be found for these works, those works might get filtered out anyway)
+- Unclear if the movies predicate relates characters and actors"
+cq_21,What are all the director–actor pairs linked through movies available?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+
+SELECT DISTINCT ?director ?actor
+WHERE {
+  ?director ns1:directed ?movie .
+  ?character ns1:movie ?movie .
+  ?character ns1:actor ?actor .
+}",Gemini,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning (ignoring the movie predicate due to its semantic shallowness, the directed predicate could be Getting More media than just movies)
+- Unlear if the movie predicate relates characters and movies"
+cq_15,What are all the character–team–movie triples available where a character is a member of a team and appears in a movie?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT ?character ?team ?movie
+WHERE {
+  ?character ns1:teams ?team .
+  ?character ns1:movies ?movie .
+}",Gemini,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- Unclear if the teams and movies predicates get teams and movies, respectively"
+cq_15,What are all the character–team–movie triples available where a character is a member of a team and appears in a movie?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX class: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/>
+
+SELECT ?character ?team ?movie
+WHERE {
+    ?character a class:character .
+    ?team a class:organization .
+    ?movie a class:movie .
+    
+    ?character ns1:movie ?movie .
+    
+    { ?team ns1:members ?character . } 
+    UNION 
+    { ?team ns1:formermembers ?character . } 
+    UNION 
+    { ?team ns1:leader ?character . }
+    UNION 
+    { ?team ns1:founder ?character . }
+    UNION
+    { ?character ns1:team ?team . }
+    UNION
+    { ?character ns1:affiliation ?team . }
+}",Gemini,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Query overall makes sense
+- Since the CQ specifically says ""is a member of a team,"" it may have been more appropriate to use only the members and team predicates, as the the other ones may yield characters who have some other realtion to the team"
+cq_23,What are all the pairs of characters available that have co-appeared in a movie?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT ?character1 ?character2 ?movie
+WHERE {
+  ?character1 ns1:movies ?movie .
+  ?character2 ns1:movies ?movie .
+  FILTER(?character1 != ?character2) .
+  FILTER(STR(?character1) < STR(?character2))
+}",gpt-oss120b,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- the rest of the Query looks fine if the movies predicate actually gets a single movie"
+cq_23,What are all the pairs of characters available that have co-appeared in a movie?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?character1 ?character2
+WHERE {
+  ?movie rdf:type <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/movie> .
+  ?movie ns1:character ?character1 .
+  ?movie ns1:character ?character2 .
+  FILTER(?character1 != ?character2)
+  FILTER(STR(?character1) < STR(?character2))   # avoid duplicate unordered pairs
+}",gpt-oss120b,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,FALSE,TRUE," - Using whole URI for movie type is unusual but not incorrect
+- the rest of the Query looks fine"
+cq_19,What are all the movies and the set of teams that have at least one member appearing in them?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT DISTINCT ?movie ?team
+WHERE {
+  ?character ns1:movies ?movie .
+  ?character ns1:teams ?team .
+}",gpt-oss120b,marveldb_big,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- Unclear how the movies and teams predicates work and whether they both expect a single character as the subject and a single movie or team as the object"
+cq_19,What are all the movies and the set of teams that have at least one member appearing in them?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX mc:  <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/>
+
+SELECT DISTINCT ?movie ?team
+WHERE {
+  # a character (or other entity) that appears in a movie
+  ?member a mc:character .
+  ?member ns1:movie ?movie .
+
+  # the team that this member belongs to (either via the member’s “team” link
+  # or via the team’s “members” link)
+  { ?member ns1:team ?team . }
+  UNION
+  { ?team   ns1:members ?member . }
+
+  # ensure the team is an organization (a “team” in the MCU)
+  ?team a mc:organization .
+}",gpt-oss120b,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE, - Unsure what the point of checking if a team is an organization is; can some teams not be organizations? Does this ensure only teams are gotten or does it cause some teams to be missed?
+cq_25,What are all the movies and their counts for each pair of characters that co-appear in multiple movies?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?char1 ?char2 (COUNT(DISTINCT ?movie) AS ?movieCount) (GROUP_CONCAT(DISTINCT ?movie; separator="", "") AS ?movies)
+WHERE {
+  ?char1 ns1:movies ?movie .
+  ?char2 ns1:movies ?movie .
+  FILTER(?char1 != ?char2)
+  FILTER(STR(?char1) < STR(?char2))
+}
+GROUP BY ?char1 ?char2
+HAVING (COUNT(DISTINCT ?movie) > 1)
+ORDER BY DESC(?movieCount)",Claude,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- Query makes sense if movies predicate actually gets movies
+- Query should be taking two different characters, Getting all the movies they both appear in, and counting this total"
+cq_25,What are all the movies and their counts for each pair of characters that co-appear in multiple movies?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?character1 ?character2 (GROUP_CONCAT(DISTINCT ?movie; separator="", "") AS ?movies) (COUNT(DISTINCT ?movie) AS ?movieCount)
+WHERE {
+  ?character1 ns1:movie ?movie .
+  ?character2 ns1:movie ?movie .
+  FILTER(?character1 != ?character2)
+  FILTER(STR(?character1) < STR(?character2))
+}
+GROUP BY ?character1 ?character2
+HAVING (COUNT(DISTINCT ?movie) > 1)
+ORDER BY DESC(?movieCount)",Claude,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTION_FAILURE,TRUE,FALSE,FALSE," - The lack of typing entities is concerning
+- Query makes sense; should be taking two different characters, getting all the movies they both appear in, and counting this total"
+cq_24,How many movies does each character appear in (character appearance count)?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?character (COUNT(DISTINCT ?movie) AS ?appearanceCount)
+WHERE {
+  ?character ns1:movies ?movie .
+}
+GROUP BY ?character
+ORDER BY DESC(?appearanceCount)",Claude,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- movies predicate is Unclear"
+cq_24,How many movies does each character appear in (character appearance count)?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?character (COUNT(DISTINCT ?movie) AS ?movieCount)
+WHERE {
+  ?character a <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/character> .
+  ?character ns1:movie ?movie .
+}
+GROUP BY ?character
+ORDER BY DESC(?movieCount)",Claude,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Using whole URI for character type is unusual but not incorrect
+- Maybe movie should be typed too"
+cq_27,"Who are the distinct characters that possess a power, their counts, and rank-ordered by popularity?","PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX ns2: <http://dbkwik.webdatacommons.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?character ?powerCount ?popularity
+WHERE {
+  ?pg rdf:type <http://dbkwik.webdatacommons.org/marvel.wikia.com/class/official_power_grid> ;
+      rdfs:label ?pgLabel .
+  BIND(STRBEFORE(STR(?pgLabel), ""/Power Grid"") AS ?character)
+
+  {
+    SELECT ?pg (COUNT(?val) AS ?powerCount)
+    WHERE {
+      ?pg rdf:type <http://dbkwik.webdatacommons.org/marvel.wikia.com/class/official_power_grid> .
+      VALUES ?prop { ns1:durability ns1:energyProjection ns1:fightingSkills ns1:intelligence ns1:speed ns1:strength }
+      ?pg ?prop ?val .
+    }
+    GROUP BY ?pg
+  }
+
+  OPTIONAL {
+    {
+      SELECT ?character (COUNT(DISTINCT ?src) AS ?popularity)
+      WHERE {
+        ?char rdfs:label ?charLabel .
+        BIND(STR(?charLabel) AS ?character)
+        ?src ns2:wikiPageWikiLink ?char .
+      }
+      GROUP BY ?character
+    }
+  }
+}
+ORDER BY DESC(?popularity) DESC(?powerCount) ?character",GPT5,marveldb_big,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Looking at everything before ""/Power Grid"" is a really odd way of getting the character; not typing the character is also concerning
+- Unclear if official_power_grid is equivalent to power, which is being used with very specific predicates to get powers; there might be a better way to do this
+- If src is just the page links, how is it being used as a means of reflecting popularity?
+- The rank is not accounted for at all
+- There might be more, but this query is hard to parse"
+cq_27,"Who are the distinct characters that possess a power, their counts, and rank-ordered by popularity?",,GPT5,mcuwiki_small,non_sparql_output,unchanged,NON_SPARQL_OUTPUT,FALSE,FALSE,FALSE, - No Query
+cq_31,"What is the number of unique teams, unique powers, and unique locations represented via their characters for each of the movies?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?movie ?movieLabel
+       (COUNT(DISTINCT ?team) AS ?uniqueTeams)
+       (COUNT(DISTINCT ?power) AS ?uniquePowers)
+       (COUNT(DISTINCT ?loc) AS ?uniqueLocations)
+WHERE {
+  ?char ns1:movies ?movie .
+  OPTIONAL { ?movie rdfs:label ?movieLabel . }
+  
+  OPTIONAL {
+    { ?char ns1:teams ?team . }
+    UNION
+    { ?char ns1:teames ?team . }
+  }
+  
+  OPTIONAL { ?char ns1:powers ?power . }
+  
+  OPTIONAL {
+    { ?char ns1:baseofoperations ?loc . }
+    UNION
+    { ?char ns1:placeofbirth ?loc . }
+    UNION
+    { ?char ns1:origin ?loc . }
+  }
+}
+GROUP BY ?movie ?movieLabel
+ORDER BY ?movie",GPT5,marveldb_big,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- what is the distinction between the teams and teames predicates?
+- a lot of the predicates are semantically shallow and do not reflect what the subjects and objects should be (e.g., movies, teams, teames, powers, origin)"
+cq_31,"What is the number of unique teams, unique powers, and unique locations represented via their characters for each of the movies?","PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+
+SELECT ?movie
+       (COUNT(DISTINCT ?team) AS ?uniqueTeams)
+       (COUNT(DISTINCT ?power) AS ?uniquePowers)
+       (COUNT(DISTINCT ?loc) AS ?uniqueLocations)
+WHERE {
+  ?char ns1:movie ?movie .
+  OPTIONAL { ?char (ns1:team|ns1:affiliation) ?team . }
+  OPTIONAL { ?char ns1:species ?power . }
+  OPTIONAL { ?char (ns1:citizenship|ns1:homeplanet|ns1:location) ?loc . }
+}
+GROUP BY ?movie",GPT5,mcuwiki_small,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - The lack of typing entities is concerning
+- The affiliation predicate might be misleading regarding obtaining the character's team
+- The species predicate is highly unlikely to be the means of obtaining the character's power 
+- Unclear if the citzenship predicate yields a character's location"
+cq_28,"Who are all the bridge characters that are members of more than one team, and what are those team combinations?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?characterLabel (GROUP_CONCAT(DISTINCT ?teamLabel; separator="" | "") AS ?teamCombinations)
+WHERE {
+  ?character ns1:teams ?team .
+  ?character rdfs:label ?characterLabel .
+  ?team rdfs:label ?teamLabel .
+}
+GROUP BY ?character ?characterLabel
+HAVING (COUNT(DISTINCT ?team) > 1)",Gemini,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- Unclear if teams is already Getting groups of teams or just one team at a time"
+cq_28,"Who are all the bridge characters that are members of more than one team, and what are those team combinations?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX ns2: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/affiliation(s)>
+PREFIX ns3: <http://dbkwik.webdatacommons.org/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?characterName (GROUP_CONCAT(DISTINCT ?teamName; separator="", "") AS ?teamCombinations)
+WHERE {
+    ?character a ns3:character .
+    ?team a ns3:organization .
+    {
+        ?team (ns1:members|ns1:formermembers|ns1:leader|ns1:founder|ns1:formerleaders) ?character .
+    }
+    UNION
+    {
+        ?character (ns1:affiliation|ns1:team|ns2:) ?team .
+    }
+    ?character rdfs:label ?characterName .
+    ?team rdfs:label ?teamName .
+}
+GROUP BY ?characterName
+HAVING (COUNT(DISTINCT ?teamName) > 1)
+ORDER BY ?characterName",Gemini,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,FALSE,TRUE," - Unclear if organizations other than teams can exist; if so, another type might be ideal
+- The predicates formermembers, founder, formerleaders, and affiliation are perhaps not the best predicates for determining membership of a team
+- The purpose for using  both the predicates affiliation and affiliation(s) is unclear"
+cq_30,What are all the locations used as settings or associated contexts for multiple movies and/or characters and the counts of those associations?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?location (COUNT(?subject) AS ?associationCount)
+WHERE {
+    { ?subject ns1:placeofbirth ?location . }
+    UNION
+    { ?subject ns1:baseofoperations ?location . }
+    UNION
+    { ?subject ns1:historytext ?location . }
+}
+GROUP BY ?location
+HAVING (COUNT(?subject) > 1)
+ORDER BY DESC(?associationCount)",Gemini,marveldb_big,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- only locations pertinent to characters are considered, not movies as well
+- Unclear how the historytext predicate works"
+cq_30,What are all the locations used as settings or associated contexts for multiple movies and/or characters and the counts of those associations?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?location (COUNT(DISTINCT ?association) AS ?associationCount)
+WHERE {
+  {
+    ?entity (ns1:location|ns1:locations|ns1:place|ns1:headquarters|ns1:homeplanet|ns1:citizenship|ns1:continent) ?location .
+    {
+      BIND(?entity AS ?association)
+      ?association a ?type .
+      FILTER(?type IN (<http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/character>, <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/movie>))
+    }
+    UNION
+    {
+      ?entity (ns1:movie|ns1:character|ns1:members|ns1:formermembers|ns1:actor|ns1:participants|ns1:inhabitants|ns1:owner|ns1:users|ns1:leader|ns1:founder|ns1:pilot|ns1:passengers|ns1:performer|ns1:voiceActor|ns1:film|ns1:movies|ns1:tvSeries|ns1:oneShot) ?association .
+      ?association a ?type .
+      FILTER(?type IN (<http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/character>, <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/movie>))
+    }
+  }
+  UNION
+  {
+    ?location (ns1:movie|ns1:character|ns1:members|ns1:formermembers|ns1:actor|ns1:participants|ns1:inhabitants|ns1:owner|ns1:users|ns1:leader|ns1:founder|ns1:pilot|ns1:passengers|ns1:performer|ns1:voiceActor|ns1:film|ns1:movies|ns1:tvSeries|ns1:oneShot) ?association .
+    ?association a ?type .
+    FILTER(?type IN (<http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/character>, <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/movie>))
+  }
+  
+  FILTER(isURI(?location))
+}
+GROUP BY ?location
+HAVING (COUNT(DISTINCT ?association) > 1)
+ORDER BY DESC(?associationCount)",Gemini,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - Query is difficult to parse
+- Using whole URI for character and movie types is unusual but not incorrect
+- Perhaps excessive use of predicates for determining certain properties (e.g., citizenship, voiceActor, tvSeries, oneShot, etc.) but may not matter due to typing constraints
+- The relationship between location and association doesn't make complete sense based on the used predicates"
+cq_33,"What are all the distributions of powers among each team's members, grouped by teams,  for comparing teams for computability (e.g., which powers are most characteristic of each team)?","PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?teamLabel ?powerLabel (COUNT(?member) AS ?memberCount)
+WHERE {
+  ?member ns1:powers ?power .
+  ?member ns1:teams ?team .
+  ?team rdfs:label ?teamLabel .
+  ?power rdfs:label ?powerLabel .
+}
+GROUP BY ?teamLabel ?powerLabel
+ORDER BY ?teamLabel DESC(?memberCount)",gpt-oss120b,marveldb_big,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,FALSE,TRUE," - The lack of typing entities is concerning
+- Unclear how powers and teams predicates work
+- Seems to aligning with the CQ otherwise; gets team memebers with a specific power and counts them"
+cq_33,"What are all the distributions of powers among each team's members, grouped by teams,  for comparing teams for computability (e.g., which powers are most characteristic of each team)?",,gpt-oss120b,mcuwiki_small,non_sparql_output,unchanged,NON_SPARQL_OUTPUT,FALSE,FALSE,FALSE, - No Query
+cq_26,What are all the unions of movies for each of the teams in which any of their members appear (team-level filmography)?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvel.wikia.com/property/>
+
+SELECT ?team (GROUP_CONCAT(DISTINCT ?movie; SEPARATOR="", "") AS ?movies)
+WHERE {
+  ?member ns1:teams ?team .
+  ?member ns1:movies ?movie .
+}
+GROUP BY ?team
+ORDER BY ?team",gpt-oss120b,marveldb_big,exact_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- Unclear how the teams and movies predicates work"
+cq_26,What are all the unions of movies for each of the teams in which any of their members appear (team-level filmography)?,"PREFIX ns1: <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/property/>
+
+SELECT ?team (GROUP_CONCAT(DISTINCT ?movie; SEPARATOR="", "") AS ?movies)
+WHERE {
+  { ?team ns1:members      ?member } UNION
+  { ?team ns1:formermembers ?member }
+  ?member ns1:movie ?movie .
+}
+GROUP BY ?team",gpt-oss120b,mcuwiki_small,fenced_query,schema_prefixes_added,EXECUTABLE,TRUE,TRUE,TRUE," - the lack of typing entities is concerning
+- Unclear if members and formermembers predicates return only one member or multiple
+- Perhaps best not to use the formermembers predicate Since the CQ says only members"

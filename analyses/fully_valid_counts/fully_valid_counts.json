@@ -1,0 +1,630 @@
+{
+  "summary": [
+    {
+      "Rank": 1,
+      "model": "GPT5",
+      "Small Simple": 12,
+      "Small Moderate": 9,
+      "Small Complex": 8,
+      "Big Simple": 10,
+      "Big Moderate": 7,
+      "Big Complex": 8,
+      "Small Total": 29,
+      "Big Total": 25,
+      "Both KGs Total": 54,
+      "Fully Valid Rate": 0.8181818181818182
+    },
+    {
+      "Rank": 2,
+      "model": "Claude",
+      "Small Simple": 11,
+      "Small Moderate": 8,
+      "Small Complex": 7,
+      "Big Simple": 11,
+      "Big Moderate": 8,
+      "Big Complex": 7,
+      "Small Total": 26,
+      "Big Total": 26,
+      "Both KGs Total": 52,
+      "Fully Valid Rate": 0.7878787878787878
+    },
+    {
+      "Rank": 3,
+      "model": "gpt-oss 120b",
+      "Small Simple": 12,
+      "Small Moderate": 7,
+      "Small Complex": 4,
+      "Big Simple": 7,
+      "Big Moderate": 9,
+      "Big Complex": 9,
+      "Small Total": 23,
+      "Big Total": 25,
+      "Both KGs Total": 48,
+      "Fully Valid Rate": 0.7272727272727273
+    },
+    {
+      "Rank": 4,
+      "model": "Gemini",
+      "Small Simple": 10,
+      "Small Moderate": 7,
+      "Small Complex": 4,
+      "Big Simple": 11,
+      "Big Moderate": 7,
+      "Big Complex": 9,
+      "Small Total": 21,
+      "Big Total": 27,
+      "Both KGs Total": 48,
+      "Fully Valid Rate": 0.7272727272727273
+    },
+    {
+      "Rank": 5,
+      "model": "deepseek-r1 latest",
+      "Small Simple": 6,
+      "Small Moderate": 2,
+      "Small Complex": 1,
+      "Big Simple": 2,
+      "Big Moderate": 0,
+      "Big Complex": 3,
+      "Small Total": 9,
+      "Big Total": 5,
+      "Both KGs Total": 14,
+      "Fully Valid Rate": 0.21212121212121213
+    },
+    {
+      "Rank": 6,
+      "model": "mistral-small3.2 latest",
+      "Small Simple": 4,
+      "Small Moderate": 2,
+      "Small Complex": 1,
+      "Big Simple": 6,
+      "Big Moderate": 0,
+      "Big Complex": 0,
+      "Small Total": 7,
+      "Big Total": 6,
+      "Both KGs Total": 13,
+      "Fully Valid Rate": 0.19696969696969696
+    },
+    {
+      "Rank": 7,
+      "model": "llama3.2 latest",
+      "Small Simple": 3,
+      "Small Moderate": 2,
+      "Small Complex": 0,
+      "Big Simple": 1,
+      "Big Moderate": 0,
+      "Big Complex": 0,
+      "Small Total": 5,
+      "Big Total": 1,
+      "Both KGs Total": 6,
+      "Fully Valid Rate": 0.09090909090909091
+    },
+    {
+      "Rank": 8,
+      "model": "granite4 latest",
+      "Small Simple": 0,
+      "Small Moderate": 1,
+      "Small Complex": 0,
+      "Big Simple": 1,
+      "Big Moderate": 0,
+      "Big Complex": 0,
+      "Small Total": 1,
+      "Big Total": 1,
+      "Both KGs Total": 2,
+      "Fully Valid Rate": 0.030303030303030304
+    },
+    {
+      "Rank": 9,
+      "model": "granite3.3 latest",
+      "Small Simple": 0,
+      "Small Moderate": 0,
+      "Small Complex": 0,
+      "Big Simple": 1,
+      "Big Moderate": 0,
+      "Big Complex": 1,
+      "Small Total": 0,
+      "Big Total": 2,
+      "Both KGs Total": 2,
+      "Fully Valid Rate": 0.030303030303030304
+    },
+    {
+      "Rank": 10,
+      "model": "gemma3 27b",
+      "Small Simple": 0,
+      "Small Moderate": 0,
+      "Small Complex": 0,
+      "Big Simple": 0,
+      "Big Moderate": 0,
+      "Big Complex": 0,
+      "Small Total": 0,
+      "Big Total": 0,
+      "Both KGs Total": 0,
+      "Fully Valid Rate": 0.0
+    }
+  ],
+  "long": [
+    {
+      "model": "Claude",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 7,
+      "fully_valid_rate": 0.7
+    },
+    {
+      "model": "Claude",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 8,
+      "fully_valid_rate": 0.7272727272727273
+    },
+    {
+      "model": "Claude",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 11,
+      "fully_valid_rate": 0.9166666666666666
+    },
+    {
+      "model": "Claude",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 7,
+      "fully_valid_rate": 0.7
+    },
+    {
+      "model": "Claude",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 8,
+      "fully_valid_rate": 0.7272727272727273
+    },
+    {
+      "model": "Claude",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 11,
+      "fully_valid_rate": 0.9166666666666666
+    },
+    {
+      "model": "GPT5",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 8,
+      "fully_valid_rate": 0.8
+    },
+    {
+      "model": "GPT5",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 9,
+      "fully_valid_rate": 0.8181818181818182
+    },
+    {
+      "model": "GPT5",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 12,
+      "fully_valid_rate": 1.0
+    },
+    {
+      "model": "GPT5",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 8,
+      "fully_valid_rate": 0.8
+    },
+    {
+      "model": "GPT5",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 7,
+      "fully_valid_rate": 0.6363636363636364
+    },
+    {
+      "model": "GPT5",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 10,
+      "fully_valid_rate": 0.8333333333333334
+    },
+    {
+      "model": "Gemini",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 4,
+      "fully_valid_rate": 0.4
+    },
+    {
+      "model": "Gemini",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 7,
+      "fully_valid_rate": 0.6363636363636364
+    },
+    {
+      "model": "Gemini",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 10,
+      "fully_valid_rate": 0.8333333333333334
+    },
+    {
+      "model": "Gemini",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 9,
+      "fully_valid_rate": 0.9
+    },
+    {
+      "model": "Gemini",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 7,
+      "fully_valid_rate": 0.6363636363636364
+    },
+    {
+      "model": "Gemini",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 11,
+      "fully_valid_rate": 0.9166666666666666
+    },
+    {
+      "model": "deepseek-r1 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 1,
+      "fully_valid_rate": 0.1
+    },
+    {
+      "model": "deepseek-r1 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 2,
+      "fully_valid_rate": 0.18181818181818182
+    },
+    {
+      "model": "deepseek-r1 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 6,
+      "fully_valid_rate": 0.5
+    },
+    {
+      "model": "deepseek-r1 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 3,
+      "fully_valid_rate": 0.3
+    },
+    {
+      "model": "deepseek-r1 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "deepseek-r1 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 2,
+      "fully_valid_rate": 0.16666666666666666
+    },
+    {
+      "model": "gemma3 27b",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "gemma3 27b",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "gemma3 27b",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "gemma3 27b",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "gemma3 27b",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "gemma3 27b",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "gpt-oss 120b",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 4,
+      "fully_valid_rate": 0.4
+    },
+    {
+      "model": "gpt-oss 120b",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 7,
+      "fully_valid_rate": 0.6363636363636364
+    },
+    {
+      "model": "gpt-oss 120b",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 12,
+      "fully_valid_rate": 1.0
+    },
+    {
+      "model": "gpt-oss 120b",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 9,
+      "fully_valid_rate": 0.9
+    },
+    {
+      "model": "gpt-oss 120b",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 9,
+      "fully_valid_rate": 0.8181818181818182
+    },
+    {
+      "model": "gpt-oss 120b",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 7,
+      "fully_valid_rate": 0.5833333333333334
+    },
+    {
+      "model": "granite3.3 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "granite3.3 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "granite3.3 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "granite3.3 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 1,
+      "fully_valid_rate": 0.1
+    },
+    {
+      "model": "granite3.3 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "granite3.3 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 1,
+      "fully_valid_rate": 0.08333333333333333
+    },
+    {
+      "model": "granite4 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "granite4 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 1,
+      "fully_valid_rate": 0.09090909090909091
+    },
+    {
+      "model": "granite4 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "granite4 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "granite4 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "granite4 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 1,
+      "fully_valid_rate": 0.08333333333333333
+    },
+    {
+      "model": "llama3.2 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "llama3.2 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 2,
+      "fully_valid_rate": 0.18181818181818182
+    },
+    {
+      "model": "llama3.2 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 3,
+      "fully_valid_rate": 0.25
+    },
+    {
+      "model": "llama3.2 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "llama3.2 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "llama3.2 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 1,
+      "fully_valid_rate": 0.08333333333333333
+    },
+    {
+      "model": "mistral-small3.2 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 1,
+      "fully_valid_rate": 0.1
+    },
+    {
+      "model": "mistral-small3.2 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 2,
+      "fully_valid_rate": 0.18181818181818182
+    },
+    {
+      "model": "mistral-small3.2 latest",
+      "kg": "MCUWiKi Small",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 4,
+      "fully_valid_rate": 0.3333333333333333
+    },
+    {
+      "model": "mistral-small3.2 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Complex",
+      "total_cq": 10,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "mistral-small3.2 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Moderate",
+      "total_cq": 11,
+      "fully_valid": 0,
+      "fully_valid_rate": 0.0
+    },
+    {
+      "model": "mistral-small3.2 latest",
+      "kg": "MarvelDB Big",
+      "complexity": "Simple",
+      "total_cq": 12,
+      "fully_valid": 6,
+      "fully_valid_rate": 0.5
+    }
+  ],
+  "notes": {
+    "definition": "Fully valid = syntax_ok=True, satisfiable=True, and deterministic=True.",
+    "denominators": "Per KG: Simple=12, Moderate=11, Complex=10; both KGs total denominator=66."
+  }
+}
