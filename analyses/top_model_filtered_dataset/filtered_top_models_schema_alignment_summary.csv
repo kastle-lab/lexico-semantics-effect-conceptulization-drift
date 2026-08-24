@@ -1,0 +1,60 @@
+level,dimensions,model,kg,cq_complexity,n,avg_lexical_cq_selected_schema_label_jaccard,avg_semantic_global_cq_selected_schema_similarity,avg_semantic_requirement_soft_coverage
+model,model,Claude,,,52,0.0871,0.5789,0.6059
+model,model,GPT-5,,,54,0.0995,0.6275,0.661
+model,model,GPT-OSS 120B,,,48,0.1043,0.6175,0.62
+model,model,Gemini,,,48,0.0805,0.5948,0.6258
+kg,kg,,marveldb_big,,103,0.0842,0.5635,0.5717
+kg,kg,,mcuwiki_small,,99,0.102,0.6476,0.6874
+cq_complexity,cq_complexity,,,complex,56,0.0819,0.5523,0.5775
+cq_complexity,cq_complexity,,,moderate,62,0.1031,0.6034,0.5894
+cq_complexity,cq_complexity,,,simple,84,0.0931,0.642,0.6928
+model__kg,model|kg,Claude,marveldb_big,,26,0.0865,0.5084,0.5298
+model__kg,model|kg,Claude,mcuwiki_small,,26,0.0877,0.6439,0.6763
+model__kg,model|kg,GPT-5,marveldb_big,,25,0.0795,0.5957,0.6109
+model__kg,model|kg,GPT-5,mcuwiki_small,,29,0.1166,0.655,0.7042
+model__kg,model|kg,GPT-OSS 120B,marveldb_big,,25,0.102,0.5874,0.5752
+model__kg,model|kg,GPT-OSS 120B,mcuwiki_small,,23,0.1069,0.6502,0.6687
+model__kg,model|kg,Gemini,marveldb_big,,27,0.0699,0.5605,0.5693
+model__kg,model|kg,Gemini,mcuwiki_small,,21,0.0941,0.639,0.6986
+model__cq_complexity,model|cq_complexity,Claude,,complex,14,0.0802,0.5578,0.5867
+model__cq_complexity,model|cq_complexity,Claude,,moderate,16,0.0774,0.5384,0.541
+model__cq_complexity,model|cq_complexity,Claude,,simple,22,0.0986,0.6218,0.6651
+model__cq_complexity,model|cq_complexity,GPT-5,,complex,16,0.0894,0.5673,0.6019
+model__cq_complexity,model|cq_complexity,GPT-5,,moderate,16,0.1266,0.6428,0.6358
+model__cq_complexity,model|cq_complexity,GPT-5,,simple,22,0.0871,0.6603,0.7224
+model__cq_complexity,model|cq_complexity,GPT-OSS 120B,,complex,13,0.0776,0.5471,0.5543
+model__cq_complexity,model|cq_complexity,GPT-OSS 120B,,moderate,16,0.112,0.622,0.5822
+model__cq_complexity,model|cq_complexity,GPT-OSS 120B,,simple,19,0.1162,0.6618,0.6969
+model__cq_complexity,model|cq_complexity,Gemini,,complex,13,0.0788,0.5331,0.561
+model__cq_complexity,model|cq_complexity,Gemini,,moderate,14,0.0936,0.6069,0.5964
+model__cq_complexity,model|cq_complexity,Gemini,,simple,21,0.0729,0.625,0.6857
+kg__cq_complexity,kg|cq_complexity,,marveldb_big,complex,33,0.0862,0.5369,0.5381
+kg__cq_complexity,kg|cq_complexity,,marveldb_big,moderate,31,0.0706,0.5526,0.5218
+kg__cq_complexity,kg|cq_complexity,,marveldb_big,simple,39,0.0931,0.5951,0.6402
+kg__cq_complexity,kg|cq_complexity,,mcuwiki_small,complex,23,0.0757,0.5744,0.6342
+kg__cq_complexity,kg|cq_complexity,,mcuwiki_small,moderate,31,0.1345,0.6526,0.6548
+kg__cq_complexity,kg|cq_complexity,,mcuwiki_small,simple,45,0.093,0.6815,0.7372
+model__kg__cq_complexity,model|kg|cq_complexity,Claude,marveldb_big,complex,7,0.1042,0.527,0.5289
+model__kg__cq_complexity,model|kg|cq_complexity,Claude,marveldb_big,moderate,8,0.0391,0.4438,0.4689
+model__kg__cq_complexity,model|kg|cq_complexity,Claude,marveldb_big,simple,11,0.1072,0.5405,0.573
+model__kg__cq_complexity,model|kg|cq_complexity,Claude,mcuwiki_small,complex,7,0.0561,0.5885,0.6445
+model__kg__cq_complexity,model|kg|cq_complexity,Claude,mcuwiki_small,moderate,8,0.1109,0.6211,0.6042
+model__kg__cq_complexity,model|kg|cq_complexity,Claude,mcuwiki_small,simple,11,0.0908,0.6958,0.7489
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-5,marveldb_big,complex,8,0.0723,0.5516,0.5594
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-5,marveldb_big,moderate,7,0.0814,0.5994,0.5627
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-5,marveldb_big,simple,10,0.084,0.6283,0.6859
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-5,mcuwiki_small,complex,8,0.1064,0.5831,0.6444
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-5,mcuwiki_small,moderate,9,0.1617,0.6765,0.6926
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-5,mcuwiki_small,simple,12,0.0896,0.6869,0.7529
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-OSS 120B,marveldb_big,complex,9,0.0912,0.5527,0.5473
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-OSS 120B,marveldb_big,moderate,9,0.0983,0.5841,0.529
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-OSS 120B,marveldb_big,simple,7,0.1206,0.6363,0.6705
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-OSS 120B,mcuwiki_small,complex,4,0.047,0.5346,0.5701
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-OSS 120B,mcuwiki_small,moderate,7,0.1297,0.6708,0.6505
+model__kg__cq_complexity,model|kg|cq_complexity,GPT-OSS 120B,mcuwiki_small,simple,12,0.1136,0.6767,0.7123
+model__kg__cq_complexity,model|kg|cq_complexity,Gemini,marveldb_big,complex,9,0.0794,0.5158,0.517
+model__kg__cq_complexity,model|kg|cq_complexity,Gemini,marveldb_big,moderate,7,0.0558,0.5741,0.5246
+model__kg__cq_complexity,model|kg|cq_complexity,Gemini,marveldb_big,simple,11,0.0711,0.5884,0.6405
+model__kg__cq_complexity,model|kg|cq_complexity,Gemini,mcuwiki_small,complex,4,0.0774,0.5721,0.6599
+model__kg__cq_complexity,model|kg|cq_complexity,Gemini,mcuwiki_small,moderate,7,0.1313,0.6398,0.6682
+model__kg__cq_complexity,model|kg|cq_complexity,Gemini,mcuwiki_small,simple,10,0.0748,0.6652,0.7354
